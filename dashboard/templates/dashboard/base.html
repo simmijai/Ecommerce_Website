@@ -18,6 +18,15 @@
           <li class="nav-item"><a href="#" class="nav-link text-white">Categories</a></li>
           <li class="nav-item"><a href="#" class="nav-link text-white">Subcategories</a></li>
           <li class="nav-item"><a href="#" class="nav-link text-white">Products</a></li>
+        <li class="nav-item">
+    <form action="{% url 'dashboard:admin-logout' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="nav-link text-white" 
+                style="background: none; border: none; padding: 0.5rem 1rem;">
+            Logout
+        </button>
+    </form>
+</li>
         </ul>
       </div>
 
