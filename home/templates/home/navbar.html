@@ -1,0 +1,52 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top py-2">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4 text-primary" href="{% url 'home:home' %}">
+            E-COMMERCE
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            
+            <div class="d-none d-lg-flex flex-grow-1 mx-5">
+                <form class="d-flex w-100" action="#" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search for products..." name="q" aria-label="Search">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+
+            <ul class="navbar-nav ms-auto align-items-center">
+                
+                <li class="nav-item d-lg-none w-100 my-2">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+                
+                <li class="nav-item me-2">
+                    <a class="nav-link text-dark" href="{% if user.is_authenticated %}{% url 'dashboard:dashboard' %}{% else %}{% url 'dashboard:admin-login' %}{% endif %}" title="Account">
+                        <i class="fas fa-user fa-lg"></i>
+                        <span class="ms-1 d-lg-none">{% if user.is_authenticated %}Profile{% else %}Login{% endif %}</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link text-dark position-relative" href="#" title="Shopping Cart"> 
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle small">0</span>
+                        <span class="ms-1 d-lg-none">Cart</span>
+                    </a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                    <li class="nav-item d-lg-none"><a class="nav-link" href="{% url 'dashboard:admin-logout' %}">Logout</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
