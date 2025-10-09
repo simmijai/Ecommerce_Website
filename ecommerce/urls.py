@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
-from django.conf.urls.static import static # इसे import करना ज़रूरी है
+from django.conf.urls.static import static 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
-    path("dashboard/", include("products.urls")),
+    path("products/", include("products.urls")),
     path('', include('home.urls', namespace='home')),
 ]
 if settings.DEBUG:
