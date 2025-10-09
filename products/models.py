@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
+
 # -------------------------------
 # 1️⃣ CATEGORY MODEL
 # -------------------------------
@@ -65,7 +67,7 @@ class Product(models.Model):
     brand = models.CharField(max_length=100, blank=True, null=True)
     
     
-    created_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
