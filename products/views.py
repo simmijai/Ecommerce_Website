@@ -135,3 +135,18 @@ class ProductDeleteView(DeleteView):
     model = Product
     template_name = "products/product_confirm_delete.html"
     success_url = reverse_lazy("product-list")
+
+from django.shortcuts import get_object_or_404
+
+def product_detail_view(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    images = product.images.all()
+    attributes = product.attributes.all()
+    variants = product.variants.all()
+    context = {
+        'product': product,
+        'images': images,
+        'attributes': attributes,
+        'variants': variants
+    }
+    return render(request, "products/product_detail.html", context)

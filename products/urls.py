@@ -8,6 +8,8 @@ ProductListView, product_create_view, product_update_view, ProductDeleteView
 
 
 )
+from . import views
+
 
 urlpatterns = [
     path("categories/", CategoryListView.as_view(), name="category-list"),
@@ -24,4 +26,7 @@ urlpatterns = [
     path("products/add/", product_create_view, name="product-add"),
     path("products/<int:pk>/edit/", product_update_view, name="product-edit"),
     path("products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product-delete"),
+    
+    path('products/<slug:slug>/', views.product_detail_view, name='product-detail'),
+
 ]
