@@ -10,48 +10,26 @@
 
 <div class="my-5">
     <h2 class="text-center mb-4 text-secondary">Browse Categories</h2>
-    
-    <div class="accordion" id="categoriesAccordion">
+
+    <div class="list-group">
         {% for category in categories %}
-        <div class="accordion-item shadow-sm mb-3">
-            <h2 class="accordion-header" id="heading{{ category.pk }}">
-                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-bold" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#collapse{{ category.pk }}" 
-                        aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
-                        aria-controls="collapse{{ category.pk }}">
-                    
-                    {{ category.name }}
-                    
-                    <a href="#" class="btn btn-sm btn-outline-primary ms-auto me-4" 
-                       onclick="event.stopPropagation();">
-                       View All
-                    </a>
-                </button>
-            </h2>
-            
-            <div id="collapse{{ category.pk }}" 
-                 class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
-                 aria-labelledby="heading{{ category.pk }}" 
-                 data-bs-parent="#categoriesAccordion">
-                
-                <div class="accordion-body p-3">
-                    {% if category.subcategories.all %}
-                        <div class="row row-cols-2 row-cols-md-4 g-2">
-                            {% for sub in category.subcategories.all %}
-                            <div class="col">
-                                <a href="#" class="d-block p-2 text-decoration-none text-dark bg-light rounded hover-shadow-sm small">
-                                    {{ sub.name }}
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="mb-0 text-muted small">No specific subcategories available.</p>
-                    {% endif %}
-                </div>
+        <div class="list-group-item shadow-sm mb-2 p-3 category-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ category.name }}</h5>
+                {% if category.subcategories.all %}
+                <i class="fas fa-chevron-down"></i>
+                {% endif %}
             </div>
+
+            {% if category.subcategories.all %}
+            <ul class="list-group mt-2 subcategory-list" style="display:none;">
+                {% for sub in category.subcategories.all %}
+                <li class="list-group-item py-1 px-3 small">
+                    <a href="#" class="text-decoration-none text-dark">{{ sub.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
@@ -75,20 +53,20 @@
                 {% endwith %}
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title fw-bold text-truncate">
-                        <a href="#" class="text-dark text-decoration-none"> {{ product.name }} </a>
+                        <a href="#" class="text-dark text-decoration-none">{{ product.name }}</a>
                     </h6>
                     <p class="card-text text-success fw-bold mt-auto">Price: ₹{{ product.price }}</p>
-                    
+
                     <form action="{% url 'cart:add_to_cart' product.pk %}" method="POST">
-                            {% csrf_token %}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-warning w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </form>
 
-                <button type="submit" class="btn btn-sm btn-warning w-100 mt-2">
-                    <i class="fas fa-shopping-cart me-1"></i> Add to Cart
-                </button>
-            </form>
-            
-
-                <a href="{% url 'product-detail' product.slug %}" class="btn btn-sm btn-outline-primary w-100 mt-2">View Details</a>
+                    <a href="{% url 'product-detail' product.slug %}" class="btn btn-sm btn-outline-primary w-100 mt-2">
+                        View Details
+                    </a>
                 </div>
             </div>
         </div>
@@ -97,4 +75,17 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    // Toggle subcategory dropdown
+    document.querySelectorAll('.category-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            const sublist = this.querySelector('.subcategory-list');
+            if(sublist) {
+                sublist.style.display = sublist.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+</script>
+
 {% endblock %}
