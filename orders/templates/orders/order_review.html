@@ -1,0 +1,58 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Order Review</h2>
+    <hr>
+
+    <h4>Shipping Address</h4>
+    <p>{{ shipping_address.full_name }}<br>
+       {{ shipping_address.address_line_1 }} {{ shipping_address.address_line_2 }}<br>
+       {{ shipping_address.city }}, {{ shipping_address.state }} - {{ shipping_address.pincode }}<br>
+       {{ shipping_address.phone }}
+    </p>
+
+    <h4>Products</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in cart_items %}
+                <tr>
+                    <td>{{ obj.item.product.name }}</td>
+                    <td>₹{{ obj.item.product.price }}</td>
+                    <td>{{ obj.item.quantity }}</td>
+                    <td>₹{{ obj.subtotal }}</td>
+                    <td>
+                        <button name="action" value="increase" formaction="" formmethod="post">
+                            <input type="hidden" name="item_id" value="{{ obj.item.id }}">
+                            +
+                        </button>
+                        <button name="action" value="decrease" formaction="" formmethod="post">
+                            <input type="hidden" name="item_id" value="{{ obj.item.id }}">
+                            -
+                        </button>
+                        <button name="action" value="remove" formaction="" formmethod="post">
+                            <input type="hidden" name="item_id" value="{{ obj.item.id }}">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h5>Total: ₹{{ total_price }}</h5>
+
+        <a href="{% url 'orders:place_order' %}" class="btn btn-success mt-3">Proceed to Payment</a>
+    </form>
+</div>
+{% endblock %}

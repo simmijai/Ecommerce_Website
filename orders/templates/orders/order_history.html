@@ -1,0 +1,49 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>My Orders</h2>
+    <hr>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="card mb-4 p-3">
+            <h5>Order #{{ order.id }} | Status: {{ order.status|capfirst }}</h5>
+            <hr>
+            <h6>Shipping Address</h6>
+            <p>
+                {{ order.shipping_address.full_name }}<br>
+                {{ order.shipping_address.address_line_1 }} {{ order.shipping_address.address_line_2 }}<br>
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} - {{ order.shipping_address.pincode }}<br>
+                {{ order.shipping_address.phone }}
+            </p>
+
+            <h6>Products</h6>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h6>Total: ₹{{ order.total_price }}</h6>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no previous orders.</p>
+    {% endif %}
+</div>
+{% endblock %}

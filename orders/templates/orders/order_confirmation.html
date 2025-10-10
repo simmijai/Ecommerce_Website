@@ -1,0 +1,42 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Order Confirmation</h2>
+    <hr>
+    <h4>Order #{{ order.id }}</h4>
+    <p>Status: {{ order.status }}</p>
+
+    <h4>Shipping Address</h4>
+    <p>
+        <strong>{{ order.shipping_address.full_name }}</strong><br>
+        {{ order.shipping_address.address_line_1 }} {{ order.shipping_address.address_line_2 }}<br>
+        {{ order.shipping_address.city }}, {{ order.shipping_address.state }} - {{ order.shipping_address.pincode }}<br>
+        {{ order.shipping_address.phone }}
+    </p>
+
+    <h4>Products</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td>₹{{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5>Total: ₹{{ order.total_price }}</h5>
+    <a href="{% url 'home:home}" class="btn btn-primary mt-3">Continue Shopping</a>
+</div>
+{% endblock %}
