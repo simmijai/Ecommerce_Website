@@ -20,7 +20,7 @@ class CheckoutView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         cart = Cart.objects.filter(user=user).first()
-        addresses = user.order_addresses.all()  # related_name in Address model
+        addresses = user.addresses.all()  # ✅ use related_name from your model
         context['cart'] = cart
         context['addresses'] = addresses
         context['cart_items'] = cart.items.all() if cart else []
@@ -28,14 +28,13 @@ class CheckoutView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        """Handle selected address and redirect to place order"""
         selected_address_id = request.POST.get('selected_address')
         if not selected_address_id:
             messages.error(request, "Please select an address to continue.")
             return redirect('orders:checkout')
-        
         request.session['selected_address'] = selected_address_id
         return redirect('orders:place_order')
+
 
 
 # -------------------------------
@@ -48,7 +47,7 @@ class AddAddressView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('orders:checkout')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.user = self.request.user  # ✅ assign logged-in user
         messages.success(self.request, "Address added successfully!")
         return super().form_valid(form)
 
