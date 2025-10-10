@@ -50,12 +50,16 @@
 
                 <!-- Cart -->
                 <li class="nav-item">
-                    <a class="nav-link text-dark position-relative" href="#" title="Shopping Cart"> 
-                        <i class="fas fa-shopping-cart fa-lg"></i>
-                        <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle small">0</span>
-                        <span class="ms-1 d-lg-none">Cart</span>
-                    </a>
-                </li>
+    <a class="nav-link text-dark position-relative" href="{% url 'cart:cart_list' %}" title="Shopping Cart"> 
+        <i class="fas fa-shopping-cart fa-lg"></i>
+        {% if user.is_authenticated %}
+        <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle small">
+            {{ cart_count }}
+        {% endif %}
+        <span class="ms-1 d-lg-none">Cart</span>
+    </a>
+</li>
+
 
             </ul>
         </div>
