@@ -79,12 +79,14 @@
                     </h6>
                     <p class="card-text text-success fw-bold mt-auto">Price: ₹{{ product.price }}</p>
                     
-                    <form action="#" method="POST"> 
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-warning w-100 mt-2">
-                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
-                        </button>
-                    </form>
+                    <form action="{% url 'cart:add_to_cart' product.pk %}" method="POST">
+                            {% csrf_token %}
+
+                <button type="submit" class="btn btn-sm btn-warning w-100 mt-2">
+                    <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                </button>
+            </form>
+            
 
                 <a href="{% url 'product-detail' product.slug %}" class="btn btn-sm btn-outline-primary w-100 mt-2">View Details</a>
                 </div>

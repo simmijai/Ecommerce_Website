@@ -1,0 +1,29 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Checkout</h2>
+  <hr>
+
+  <h4>Select Address</h4>
+  <form method="POST">
+    {% csrf_token %}
+    {% for address in addresses %}
+      <div class="card mb-3 p-3">
+        <input type="radio" name="selected_address" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
+        <strong>{{ address.full_name }}</strong><br>
+        {{ address.address_line_1 }} {{ address.address_line_2 }}<br>
+        {{ address.city }}, {{ address.state }} - {{ address.pincode }}<br>
+        <small>{{ address.phone }}</small>
+      </div>
+    {% empty %}
+      <p>No addresses saved yet.</p>
+    {% endfor %}
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary">Continue</button>
+    </div>
+  </form>
+
+  <hr>
+  <a href="{% url 'orders:add_address' %}" class="btn btn-outline-success">+ Add New Address</a>
+</div>
+{% endblock %}
