@@ -106,8 +106,77 @@ class OrderReviewView(LoginRequiredMixin, TemplateView):
 # -------------------------------
 # 4️⃣ Place Order
 # -------------------------------
-class PlaceOrderView(LoginRequiredMixin, View):
+# class PlaceOrderView(LoginRequiredMixin, View):
 
+#     def get(self, request, *args, **kwargs):
+#         user = request.user
+#         cart = Cart.objects.filter(user=user).first()
+#         selected_address_id = request.session.get('selected_address')
+
+#         if not cart or not cart.items.exists():
+#             messages.error(request, "Your cart is empty.")
+#             return redirect('cart:cart_list')
+
+#         if not selected_address_id:
+#             messages.error(request, "No address selected.")
+#             return redirect('orders:checkout')
+
+#         shipping_address = Address.objects.get(id=selected_address_id)
+
+#         # Create Order
+#         order = Order.objects.create(
+#             user=user,
+#             shipping_address=shipping_address,
+#             total_price=cart.total_price()
+#         )
+
+#         # Create OrderItems
+#         order_items = []
+#         for item in cart.items.all():
+#             order_item = OrderItem.objects.create(
+#                 order=order,
+#                 product=item.product,
+#                 quantity=item.quantity,
+#                 price=item.product.price
+#             )
+#             order_items.append(order_item)
+
+#         # Clear Cart
+#         cart.items.all().delete()
+
+#         # Redirect to Order Confirmation page
+#         request.session['last_order_id'] = order.id
+#         return redirect('orders:order_confirmation')
+
+# class OrderConfirmationView(LoginRequiredMixin, TemplateView):
+#     template_name = 'orders/order_confirmation.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         order_id = self.request.session.get('last_order_id')
+#         if not order_id:
+#             messages.error(self.request, "No order found.")
+#             return redirect('cart:cart_list')
+
+#         order = Order.objects.get(id=order_id)
+#         order_items = []
+
+#         for item in order.items.all():
+#             subtotal = item.price * item.quantity  # calculate subtotal in Python
+#             order_items.append({
+#                 'product_name': item.product.name,
+#                 'price': item.price,
+#                 'quantity': item.quantity,
+#                 'subtotal': subtotal
+#             })
+
+#         context['order'] = order
+#         context['order_items'] = order_items
+#         return context
+
+
+
+class PlaceOrderView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
         cart = Cart.objects.filter(user=user).first()
@@ -123,7 +192,7 @@ class PlaceOrderView(LoginRequiredMixin, View):
 
         shipping_address = Address.objects.get(id=selected_address_id)
 
-        # Create Order
+        # Create order
         order = Order.objects.create(
             user=user,
             shipping_address=shipping_address,
@@ -131,43 +200,36 @@ class PlaceOrderView(LoginRequiredMixin, View):
         )
 
         # Create OrderItems
-        order_items = []
         for item in cart.items.all():
-            order_item = OrderItem.objects.create(
+            OrderItem.objects.create(
                 order=order,
                 product=item.product,
                 quantity=item.quantity,
                 price=item.product.price
             )
-            order_items.append(order_item)
 
         # Clear Cart
         cart.items.all().delete()
 
-        # Redirect to Order Confirmation page
-        request.session['last_order_id'] = order.id
-        return redirect('orders:order_confirmation')
+        # Redirect to confirmation with order_id
+        return redirect('orders:order_confirmation', order_id=order.id)
+
 
 class OrderConfirmationView(LoginRequiredMixin, TemplateView):
     template_name = 'orders/order_confirmation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order_id = self.request.session.get('last_order_id')
-        if not order_id:
-            messages.error(self.request, "No order found.")
-            return redirect('cart:cart_list')
-
+        order_id = self.kwargs.get('order_id')
         order = Order.objects.get(id=order_id)
         order_items = []
 
         for item in order.items.all():
-            subtotal = item.price * item.quantity  # calculate subtotal in Python
             order_items.append({
                 'product_name': item.product.name,
                 'price': item.price,
                 'quantity': item.quantity,
-                'subtotal': subtotal
+                'subtotal': item.price * item.quantity
             })
 
         context['order'] = order
