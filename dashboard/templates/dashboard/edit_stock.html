@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Edit Stock{% endblock %}
+
+{% block content %}
+<h3>Edit Product Stock</h3>
+<form method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Current Stock</th>
+                <th>Update Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                    <input type="number" name="stock_{{ product.id }}" value="{{ product.stock }}" class="form-control">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-success">Update Stock</button>
+</form>
+{% endblock %}

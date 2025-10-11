@@ -18,6 +18,8 @@
           <li class="nav-item"><a href="{% url 'products:category-list' %}" class="nav-link text-white">Categories</a></li>
           <li class="nav-item"><a href="{% url 'products:subcategory-list' %}" class="nav-link text-white">Subcategories</a></li>
           <li class="nav-item"><a href="{% url 'products:product-list' %}" class="nav-link text-white">Products</a></li>
+          <li class="nav-item"><a href="{% url 'dashboard:edit-stock' %}" class="nav-link text-white"> Edit Stock Directly </a>
+</li>
           <li class="nav-item">
     <form action="{% url 'dashboard:admin-logout' %}" method="post" class="d-inline">
         {% csrf_token %}

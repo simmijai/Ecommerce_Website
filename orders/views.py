@@ -34,16 +34,58 @@ class CheckoutView(LoginRequiredMixin, TemplateView):
 # -------------------------------
 # 2️⃣ Add New Address
 # -------------------------------
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.contrib import messages
+from .models import Address
+from .forms import AddressForm
+
+# Add
 class AddAddressView(LoginRequiredMixin, CreateView):
     model = Address
     form_class = AddressForm
     template_name = 'orders/add_address.html'
-    success_url = reverse_lazy('orders:checkout')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        if form.cleaned_data.get('is_default'):
+            Address.objects.filter(user=self.request.user).update(is_default=False)
         messages.success(self.request, "Address added successfully!")
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('orders:checkout')
+
+# Edit
+class EditAddressView(LoginRequiredMixin, UpdateView):
+    model = Address
+    form_class = AddressForm
+    template_name = 'orders/edit_address.html'
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        if form.cleaned_data.get('is_default'):
+            Address.objects.filter(user=self.request.user).update(is_default=False)
+        messages.success(self.request, "Address updated successfully!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('orders:checkout')
+
+# Delete
+class DeleteAddressView(LoginRequiredMixin, DeleteView):
+    model = Address
+    template_name = 'orders/delete_address.html'
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+    def get_success_url(self):
+        messages.success(self.request, "Address deleted successfully!")
+        return reverse_lazy('orders:checkout')
 
 
 # -------------------------------

@@ -68,6 +68,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3" aria-labelledby="userDropdown">
               <li><span class="dropdown-item-text">👋 Hello, {{ user.get_username }}!</span></li>
+
               
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>

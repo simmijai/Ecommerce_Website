@@ -8,12 +8,18 @@
     <form method="POST">
         {% csrf_token %}
         {% for address in addresses %}
-        <div class="card mb-3 p-3">
-            <input type="radio" name="selected_address" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
-            <strong>{{ address.full_name }}</strong><br>
-            {{ address.address_line_1 }} {{ address.address_line_2 }}<br>
-            {{ address.city }}, {{ address.state }} - {{ address.pincode }}<br>
-            <small>{{ address.phone }}</small>
+        <div class="card mb-3 p-3 d-flex justify-content-between align-items-start">
+            <div>
+                <input type="radio" name="selected_address" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
+                <strong>{{ address.full_name }}</strong><br>
+                {{ address.address_line_1 }} {{ address.address_line_2 }}<br>
+                {{ address.city }}, {{ address.state }} - {{ address.pincode }}<br>
+                <small>{{ address.phone }}</small>
+            </div>
+            <div class="btn-group-vertical ms-3">
+                <a href="{% url 'orders:edit_address' address.id %}" class="btn btn-sm btn-outline-primary mb-1">Edit</a>
+                <a href="{% url 'orders:delete_address' address.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
         </div>
         {% empty %}
         <p>No addresses saved yet.</p>

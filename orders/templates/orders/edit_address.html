@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container mt-4">
-  <h2>Add New Address</h2>
+  <h2>Edit Address</h2>
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Save Address</button>
+    <button type="submit" class="btn btn-success">Update Address</button>
   </form>
   <a href="{% url 'orders:checkout' %}" class="btn btn-secondary mt-3">Back to Checkout</a>
 </div>

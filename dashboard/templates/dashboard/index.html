@@ -1,6 +1,55 @@
 {% extends 'dashboard/base.html' %}
+
 {% block title %}Dashboard{% endblock %}
+
 {% block content %}
 <h3>Welcome to the Admin Dashboard 👋</h3>
-<p>Use the sidebar to manage your categories, products, and more.</p>
+
+<div class="row mt-4">
+    <!-- Total Users -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Registered Users</h5>
+                <p class="card-text fs-3">{{ total_users }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Users -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-success shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Active Users</h5>
+                <p class="card-text fs-3">{{ active_users }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Products -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Products</h5>
+                <p class="card-text fs-3">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Stock Products -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-danger shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Low Stock Products (≤5)</h5>
+                <ul class="mb-0">
+                    {% for product in low_stock_products %}
+                    <li>{{ product.name }} ({{ product.stock }})</li>
+                    {% empty %}
+                    <li>No low stock products.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
