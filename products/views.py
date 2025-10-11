@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from .models import Category,SubCategory, Product, ProductImage, Variant
 from .forms import CategoryForm,SubCategoryForm,ProductForm, ProductImageForm, VariantForm
 from django.shortcuts import render,redirect
+from . import views
 
 
 
@@ -58,10 +59,42 @@ from django.urls import reverse_lazy
 from .models import Product
 from .forms import ProductForm, ProductImageFormSet, VariantFormSet
 
-class ProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
+# class ProductListView(ListView):
+#     model = Product
+#     template_name = "products/product_list.html"
+#     context_object_name = "products"
+
+def product_list_view(request):
+    products = Product.objects.filter(is_active=True)
+
+    # Filtering
+    category_id = request.GET.get('category')
+    subcategory_id = request.GET.get('subcategory')
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
+    if category_id and category_id != "":
+        products = products.filter(subcategory__category__id=category_id)
+    if subcategory_id and subcategory_id != "":
+        products = products.filter(subcategory__id=subcategory_id)
+    if min_price and min_price != "":
+        products = products.filter(price__gte=min_price)
+    if max_price and max_price != "":
+        products = products.filter(price__lte=max_price)
+
+    categories = Category.objects.filter(is_active=True)
+    subcategories = SubCategory.objects.filter(is_active=True)
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'subcategories': subcategories,
+        'selected_category': category_id,
+        'selected_subcategory': subcategory_id,
+        'min_price': min_price,
+        'max_price': max_price,
+    }
+    return render(request, 'products/product_list.html', context)
 
 def product_create_view(request):
     if request.method == "POST":

@@ -4,7 +4,7 @@ from .views import (
     CategoryUpdateView, CategoryDeleteView,
     SubCategoryListView, SubCategoryCreateView,
     SubCategoryUpdateView, SubCategoryDeleteView,
-ProductListView, product_create_view, product_update_view, ProductDeleteView
+product_create_view, product_update_view, ProductDeleteView
 
 
 )
@@ -23,7 +23,9 @@ urlpatterns = [
     path("subcategories/<int:pk>/edit/", SubCategoryUpdateView.as_view(), name="subcategory-edit"),
     path("subcategories/<int:pk>/delete/", SubCategoryDeleteView.as_view(), name="subcategory-delete"),
     
-    path("products/", ProductListView.as_view(), name="product-list"),
+    # path("products/", ProductListView.as_view(), name="product-list"),
+    path('', views.product_list_view, name='product-list'),  # Filterable list
+
     path("products/add/", product_create_view, name="product-add"),
     path("products/<int:pk>/edit/", product_update_view, name="product-edit"),
     path("products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product-delete"),
