@@ -14,14 +14,35 @@
 
     <style>
         body { padding-top: 80px; } /* space for fixed navbar */
-        .dropdown-submenu { position: relative; }
-        .dropdown-submenu .dropdown-menu { top: 0; left: 100%; margin-left: 0.1rem; }
-        .dropdown-submenu:hover > .dropdown-menu { display: block; }
+        .category-dropdown:hover .dropdown-menu { display: block; }
+        .category-dropdown .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 1000; }
     </style>
 </head>
 <body>
 
 {% include 'home/navbar.html' %}
+
+<!-- Categories below navbar -->
+<div class="bg-light shadow-sm">
+    <div class="container">
+        <div class="d-flex flex-wrap py-2">
+            {% for category in categories %}
+            <div class="me-3 position-relative category-dropdown">
+                <button class="btn btn-sm btn-outline-secondary">
+                    {{ category.name }}
+                </button>
+                {% if category.subcategories.all %}
+                <ul class="dropdown-menu p-2 shadow">
+                    {% for sub in category.subcategories.all %}
+                    <li><a class="dropdown-item" href="#">{{ sub.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% if messages %}
 <div class="container mt-3">
@@ -34,9 +55,7 @@
 </div>
 {% endif %}
 
-
 <main class="container mt-4">
-
     {% block content %}{% endblock %}
 </main>
 

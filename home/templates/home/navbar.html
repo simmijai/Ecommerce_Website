@@ -1,71 +1,70 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top py-2">
-    <div class="container">
-        <a class="navbar-brand fw-bold fs-4 text-primary" href="{% url 'home:home' %}">
-            E-COMMERCE
-        </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top py-3">
+  <div class="container">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            
-            <!-- Search Bar for large screens -->
-            <div class="d-none d-lg-flex flex-grow-1 mx-5">
-                <form class="d-flex w-100" action="#" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search for products..." name="q">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-
-            <ul class="navbar-nav ms-auto align-items-center">
-
-                <!-- Mobile search -->
-                <li class="nav-item d-lg-none w-100 my-2">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search...">
-                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                    </form>
-                </li>
-
-                    <!-- Profile / Login -->
-    <li class="nav-item dropdown me-3">
-        {% if user.is_authenticated %}
-            <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user fa-lg"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><span class="dropdown-item-text">Hello, {{ user.get_username }}!</span></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
-            </ul>
-        {% else %}
-            <a class="nav-link text-dark" href="{% url 'accounts:login' %}">
-                <i class="fas fa-user fa-lg"></i> Login
-            </a>
-        {% endif %}
-</li>
-
-
-                <!-- Cart -->
-                <li class="nav-item">
-    <a class="nav-link text-dark position-relative" href="{% url 'cart:cart_list' %}" title="Shopping Cart"> 
-        <i class="fas fa-shopping-cart fa-lg"></i>
-        {% if user.is_authenticated %}
-        <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle small">
-            {{ cart_count }}
-        {% endif %}
-        <span class="ms-1 d-lg-none">Cart</span>
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold fs-4 text-primary" href="{% url 'home:home' %}">
+      <i class="fas fa-store me-1"></i> MyShop
     </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'orders:order_history' %}">My Orders</a>
-</li>
 
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <!-- Navbar Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
 
+        <!-- Search (center aligned on desktop) -->
+        <li class="nav-item mx-lg-4 my-2 my-lg-0">
+          <form class="d-flex" action="#" method="get">
+            <input class="form-control me-2" type="search" name="q" placeholder="Search for products..." style="min-width: 250px;">
+            <button class="btn btn-outline-primary" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </li>
+
+        <!-- My Orders -->
+        <li class="nav-item me-3">
+          <a class="nav-link fw-semibold text-dark" href="{% url 'orders:order_history' %}">
+            <i class="fas fa-box me-1"></i> My Orders
+          </a>
+        </li>
+
+        <!-- Cart -->
+        <li class="nav-item position-relative me-3">
+          <a class="nav-link fw-semibold text-dark" href="{% url 'cart:cart_list' %}" title="Shopping Cart">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            {% if user.is_authenticated %}
+              <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle small">
+                {{ cart_count }}
+              </span>
+            {% endif %}
+          </a>
+        </li>
+
+        <!-- Profile / Login -->
+        <li class="nav-item dropdown">
+          {% if user.is_authenticated %}
+            <a class="nav-link dropdown-toggle fw-semibold text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user-circle fa-lg"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3" aria-labelledby="userDropdown">
+              <li><span class="dropdown-item-text">👋 Hello, {{ user.get_username }}!</span></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
             </ul>
-        </div>
+          {% else %}
+            <a class="nav-link fw-semibold text-dark" href="{% url 'accounts:login' %}">
+              <i class="fas fa-sign-in-alt me-1"></i> Login
+            </a>
+          {% endif %}
+        </li>
+      </ul>
     </div>
+
+  </div>
 </nav>

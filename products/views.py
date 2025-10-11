@@ -15,18 +15,18 @@ class CategoryCreateView(CreateView):
     model = Category
     form_class = CategoryForm
     template_name = "products/category_form.html"
-    success_url = reverse_lazy("category-list")
+    success_url = reverse_lazy("products:category-list")
 
 class CategoryUpdateView(UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "products/category_form.html"
-    success_url = reverse_lazy("category-list")
+    success_url = reverse_lazy("products:category-list")
 
 class CategoryDeleteView(DeleteView):
     model = Category
     template_name = "products/category_confirm_delete.html"
-    success_url = reverse_lazy("category-list")
+    success_url = reverse_lazy("products:category-list")
 
 class SubCategoryListView(ListView):
     model = SubCategory
@@ -37,18 +37,18 @@ class SubCategoryCreateView(CreateView):
     model = SubCategory
     form_class = SubCategoryForm
     template_name = "products/subcategory_form.html"
-    success_url = reverse_lazy("subcategory-list")
+    success_url = reverse_lazy("products:subcategory-list")
 
 class SubCategoryUpdateView(UpdateView):
     model = SubCategory
     form_class = SubCategoryForm
     template_name = "products/subcategory_form.html"
-    success_url = reverse_lazy("subcategory-list")
+    success_url = reverse_lazy("products:subcategory-list")
 
 class SubCategoryDeleteView(DeleteView):
     model = SubCategory
     template_name = "products/subcategory_confirm_delete.html"
-    success_url = reverse_lazy("subcategory-list")
+    success_url = reverse_lazy("products:subcategory-list")
     
     
 
@@ -85,7 +85,7 @@ def product_create_view(request):
             if variant_formset.is_valid():
                 variant_formset.save()
 
-            return redirect('product-list')
+            return redirect('products:product-list')
     else:
         form = ProductForm()
         image_formset = ProductImageFormSet()
@@ -117,7 +117,7 @@ def product_update_view(request, pk):
             if variant_formset.is_valid():
                 variant_formset.save()
 
-            return redirect('product-list')
+            return redirect('products:product-list')
     else:
         form = ProductForm(instance=product)
         image_formset = ProductImageFormSet(instance=product)
@@ -134,7 +134,7 @@ def product_update_view(request, pk):
 class ProductDeleteView(DeleteView):
     model = Product
     template_name = "products/product_confirm_delete.html"
-    success_url = reverse_lazy("product-list")
+    success_url = reverse_lazy("products:product-list")
 
 from django.shortcuts import get_object_or_404
 

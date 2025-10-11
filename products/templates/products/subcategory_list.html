@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container mt-4">
   <h3>SubCategories</h3>
-  <a href="{% url 'subcategory-add' %}" class="btn btn-primary mb-2">+ Add SubCategory</a>
+  <a href="{% url 'products:subcategory-add' %}" class="btn btn-primary mb-2">+ Add SubCategory</a>
   <table class="table table-striped">
     <thead><tr><th>Category</th><th>Name</th><th>Slug</th><th>Actions</th></tr></thead>
     <tbody>
@@ -12,8 +12,8 @@
         <td>{{ sub.name }}</td>
         <td>{{ sub.slug }}</td>
         <td>
-          <a href="{% url 'subcategory-edit' sub.pk %}" class="btn btn-sm btn-warning">Edit</a>
-          <a href="{% url 'subcategory-delete' sub.pk %}" class="btn btn-sm btn-danger">Delete</a>
+          <a href="{% url 'products:subcategory-edit' sub.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'products:subcategory-delete' sub.pk %}" class="btn btn-sm btn-danger">Delete</a>
         </td>
       </tr>
       {% empty %}

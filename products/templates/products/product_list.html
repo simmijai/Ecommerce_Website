@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container mt-4">
   <h3>Products</h3>
-  <a href="{% url 'product-add' %}" class="btn btn-primary mb-3">+ Add Product</a>
+  <a href="{% url 'products:product-add' %}" class="btn btn-primary mb-3">+ Add Product</a>
   <table class="table table-striped">
     <thead>
       <tr><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
@@ -15,8 +15,8 @@
         <td>{{ product.price }}</td>
         <td>{{ product.stock }}</td>
         <td>
-          <a href="{% url 'product-edit' product.pk %}" class="btn btn-sm btn-warning">Edit</a>
-          <a href="{% url 'product-delete' product.pk %}" class="btn btn-sm btn-danger">Delete</a>
+          <a href="{% url 'products:product-edit' product.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'products:product-delete' product.pk %}" class="btn btn-sm btn-danger">Delete</a>
         </td>
       </tr>
       {% empty %}

@@ -9,6 +9,7 @@ ProductListView, product_create_view, product_update_view, ProductDeleteView
 
 )
 from . import views
+app_name = 'products'  # ✅ very important for namespacing
 
 
 urlpatterns = [

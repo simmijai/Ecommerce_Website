@@ -23,11 +23,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
-    path("products/", include("products.urls")),
+    # path("products/", include("products.urls")),
     path('', include('home.urls', namespace='home')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('cart/', include('cart.urls')),
     path('orders/', include(('orders.urls', 'orders'), namespace='orders')),
+        path('products/', include('products.urls', namespace='products')),  # ✅ fixed line
+
 
 
 
