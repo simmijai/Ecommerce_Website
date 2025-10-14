@@ -14,7 +14,6 @@
                     {{ form.image.label_tag }} {{ form.image }}
                     {{ form.alt_text.label_tag }} {{ form.alt_text }}
                     {{ form.is_main.label_tag }} {{ form.is_main }}
-                    {% if form.DELETE %} {{ form.DELETE }} Delete {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -29,7 +28,6 @@
                     {{ form.value.label_tag }} {{ form.value }}
                     {{ form.price.label_tag }} {{ form.price }}
                     {{ form.stock.label_tag }} {{ form.stock }}
-                    {% if form.DELETE %} {{ form.DELETE }} Delete {% endif %}
                 </div>
             {% endfor %}
         </div>
