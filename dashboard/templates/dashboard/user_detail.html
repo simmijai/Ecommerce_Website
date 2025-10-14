@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>User Details</h2>
+    <hr>
+    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Active:</strong> {{ user.is_active }}</p>
+    <p><strong>Staff:</strong> {{ user.is_staff }}</p>
+
+    <h4 class="mt-4">Orders</h4>
+    {% if orders %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.total_price }}</td>
+                    <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No orders found for this user.</p>
+    {% endif %}
+</div>
+{% endblock %}

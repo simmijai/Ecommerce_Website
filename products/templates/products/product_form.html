@@ -39,43 +39,4 @@
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 </div>
-
-<script>
-function addForm(type){
-    let formset, totalFormsInput, prefix;
-
-    if(type === 'image'){
-        formset = document.getElementById('image-formset');
-        totalFormsInput = document.getElementById('id_' + '{{ image_formset.prefix }}-TOTAL_FORMS');
-        prefix = '{{ image_formset.prefix }}';
-    } else {
-        formset = document.getElementById('variant-formset');
-        totalFormsInput = document.getElementById('id_' + '{{ variant_formset.prefix }}-TOTAL_FORMS');
-        prefix = '{{ variant_formset.prefix }}';
-    }
-
-    let totalForms = parseInt(totalFormsInput.value);
-    let newForm = formset.children[0].cloneNode(true);
-
-    // Clear all input values
-    newForm.querySelectorAll('input, select, textarea').forEach(input => {
-        if(input.type === 'checkbox' || input.type === 'radio') input.checked = false;
-        else input.value = '';
-    });
-
-    // Update name and id attributes
-    newForm.querySelectorAll('*').forEach(el => {
-        if(el.hasAttribute('name')){
-            el.name = el.name.replace(/-\d+-/, '-' + totalForms + '-');
-        }
-        if(el.hasAttribute('id')){
-            el.id = el.id.replace(/-\d+-/, '-' + totalForms + '-');
-        }
-    });
-
-    formset.appendChild(newForm);
-    totalFormsInput.value = totalForms + 1;
-}
-</script>
-
 {% endblock %}

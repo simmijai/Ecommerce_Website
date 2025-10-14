@@ -1,0 +1,44 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Edit User Details</h3>
+
+<form method="POST" class="card p-4 shadow-sm" style="max-width: 600px;">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="full_name" class="form-control" value="{{ user.get_full_name }}">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select name="is_staff" class="form-select">
+            <option value="0" {% if not user.is_staff %}selected{% endif %}>User</option>
+            <option value="1" {% if user.is_staff %}selected{% endif %}>Admin</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Active Status</label>
+        <select name="is_active" class="form-select">
+            <option value="1" {% if user.is_active %}selected{% endif %}>Active</option>
+            <option value="0" {% if not user.is_active %}selected{% endif %}>Inactive</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    <a href="{% url 'dashboard:users-list' %}" class="btn btn-secondary mt-3">Cancel</a>
+</form>
+{% endblock %}

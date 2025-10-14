@@ -66,3 +66,54 @@ def edit_stock_view(request):
         'products': products
     }
     return render(request, 'dashboard/edit_stock.html', context)
+
+
+from accounts.models import User
+from orders.models import Order  # assuming you have an Order model
+from products.models import Product
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def users_list_view(request):
+    users = User.objects.all().order_by('-date_joined')  # latest users first
+
+    context = {
+        'users': users
+    }
+    return render(request, 'dashboard/users_list.html', context)
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def user_detail_view(request, user_id):
+    user = User.objects.get(id=user_id)
+    # orders = user.order_set.all()  # all orders of this user
+    orders = user.order_addresses.all()
+
+    cart_items = user.cart_set.all() if hasattr(user, 'cart_set') else []
+
+    context = {
+        'user': user,
+        'orders': orders,
+        'cart_items': cart_items,
+    }
+    return render(request, 'dashboard/user_detail.html', context)
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def user_edit_view(request, user_id):
+    user = User.objects.get(id=user_id)
+
+    if request.method == "POST":
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.is_active = bool(request.POST.get('is_active'))
+        user.is_staff = bool(request.POST.get('is_staff'))
+        user.save()
+        return redirect('dashboard:users-list')
+
+    context = {
+        'user': user
+    }
+    return render(request, 'dashboard/user_edit.html', context)

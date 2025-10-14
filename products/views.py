@@ -104,11 +104,7 @@ def product_create_view(request):
 
             # ✅ Handle AnonymousUser
             if request.user.is_authenticated:
-                product.created_by = request.user
-            else:
-                product.created_by = None
-
-            product.save()
+                product.save()
 
             image_formset = ProductImageFormSet(request.POST, request.FILES, instance=product)
             if image_formset.is_valid():
