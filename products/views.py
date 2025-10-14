@@ -59,10 +59,6 @@ from django.urls import reverse_lazy
 from .models import Product
 from .forms import ProductForm, ProductImageFormSet, VariantFormSet
 
-# class ProductListView(ListView):
-#     model = Product
-#     template_name = "products/product_list.html"
-#     context_object_name = "products"
 
 def product_list_view(request):
     products = Product.objects.filter(is_active=True)
@@ -95,6 +91,23 @@ def product_list_view(request):
         'max_price': max_price,
     }
     return render(request, 'products/product_list.html', context)
+
+from django.shortcuts import get_object_or_404
+
+def products_by_subcategory(request, subcategory_slug):
+    subcategory = get_object_or_404(SubCategory, slug=subcategory_slug)
+    products = Product.objects.filter(subcategory=subcategory, is_active=True)
+    categories = Category.objects.filter(is_active=True)
+    subcategories = SubCategory.objects.filter(is_active=True)
+
+    return render(request, 'products/product_list.html', {
+        'products': products,
+        'categories': categories,
+        'subcategories': subcategories,
+        'selected_subcategory': subcategory.id,
+        'subcategory_name': subcategory.name,
+    })
+
 
 def product_create_view(request):
     if request.method == "POST":
