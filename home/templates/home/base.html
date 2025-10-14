@@ -36,7 +36,7 @@
                 {% if category.subcategories.all %}
                 <ul class="dropdown-menu p-2 shadow">
                     {% for sub in category.subcategories.all %}
-                    <li><a class="dropdown-item" href="#">{{ sub.name }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'home:home' %}?subcategory={{ sub.id }}">{{ sub.name }}</a></li>
                     {% endfor %}
                 </ul>
                 {% endif %}
