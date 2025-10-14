@@ -26,6 +26,8 @@
                         <th>Price</th>
                         <th>Qty</th>
                         <th>Subtotal</th>
+                        <th>Total</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -35,12 +37,11 @@
                         <td>₹{{ item.price }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat }}</td>
+                        <td>₹{{ order.total_price }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
-            <h6>Total: ₹{{ order.total_price }}</h6>
         </div>
         {% endfor %}
     {% else %}

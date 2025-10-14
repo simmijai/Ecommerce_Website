@@ -1,34 +1,70 @@
 {% extends "home/base.html" %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Checkout</h2>
-    <hr>
+<div class="container my-5">
+    <h2 class="fw-bold text-center mb-4">Checkout</h2>
+    <hr class="mb-4">
 
-    <h4>Select Address</h4>
-    <form method="POST">
+    <h4 class="mb-3 text-primary">Select Delivery Address</h4>
+
+    <form method="POST" class="mb-4">
         {% csrf_token %}
-        {% for address in addresses %}
-        <div class="card mb-3 p-3 d-flex justify-content-between align-items-start">
-            <div>
-                <input type="radio" name="selected_address" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
-                <strong>{{ address.full_name }}</strong><br>
-                {{ address.address_line_1 }} {{ address.address_line_2 }}<br>
-                {{ address.city }}, {{ address.state }} - {{ address.pincode }}<br>
-                <small>{{ address.phone }}</small>
+        {% if addresses %}
+            <div class="row g-4">
+                {% for address in addresses %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-0 rounded-4 position-relative h-100 address-card">
+                        <div class="card-body p-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="selected_address" 
+                                       id="address_{{ address.id }}" value="{{ address.id }}" 
+                                       {% if address.is_default %}checked{% endif %}>
+                                <label class="form-check-label fw-semibold" for="address_{{ address.id }}">
+                                    {{ address.full_name }}
+                                </label>
+                            </div>
+                            <p class="mb-1 small text-muted">{{ address.address_line_1 }}
+                            {{ address.city }}, {{ address.state }} - {{ address.pincode }}</p>
+                            <p class="small text-muted">📞 {{ address.phone }}</p>
+                        </div>
+
+                        <!-- Action Buttons (Right Corner) -->
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <a href="{% url 'orders:edit_address' address.id %}" 
+                               class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1">Edit</a>
+                            <a href="{% url 'orders:delete_address' address.id %}" 
+                               class="btn btn-sm btn-outline-danger rounded-pill px-3">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="btn-group-vertical ms-3">
-                <a href="{% url 'orders:edit_address' address.id %}" class="btn btn-sm btn-outline-primary mb-1">Edit</a>
-                <a href="{% url 'orders:delete_address' address.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        {% else %}
+            <div class="alert alert-info text-center mt-4">
+                You haven’t saved any addresses yet.
             </div>
-        </div>
-        {% empty %}
-        <p>No addresses saved yet.</p>
-        {% endfor %}
-        <div class="text-end mb-4">
-            <button type="submit" class="btn btn-primary">Continue</button>
+        {% endif %}
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a href="{% url 'orders:add_address' %}" class="btn btn-outline-success rounded-pill px-4">
+                + Add New Address
+            </a>
+            <button type="submit" class="btn btn-primary rounded-pill px-5">
+                Continue <i class="bi bi-arrow-right-circle ms-1"></i>
+            </button>
         </div>
     </form>
-
-    <a href="{% url 'orders:add_address' %}" class="btn btn-outline-success mb-4">+ Add New Address</a>
 </div>
+
+<!-- Optional Custom Styling -->
+<style>
+    .address-card:hover {
+        transform: translateY(-4px);
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+</style>
 {% endblock %}
