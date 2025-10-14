@@ -7,13 +7,14 @@
     {% if orders %}
         {% for order in orders %}
         <div class="card mb-4 p-3">
-            <h5>Order #{{ order.id }} | Status: {{ order.status|capfirst }}</h5>
+            {% comment %} <h5>Order{{ order.id }} | {% endcomment %}
+                <h5> Status: {{ order.status|capfirst }}</h5>
             <hr>
             <h6>Shipping Address</h6>
             <p>
-                {{ order.shipping_address.full_name }}<br>
-                {{ order.shipping_address.address_line_1 }} {{ order.shipping_address.address_line_2 }}<br>
-                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} - {{ order.shipping_address.pincode }}<br>
+                {{ order.shipping_address.full_name }}
+                {{ order.shipping_address.address_line_1 }}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} - {{ order.shipping_address.pincode }}
                 {{ order.shipping_address.phone }}
             </p>
 
